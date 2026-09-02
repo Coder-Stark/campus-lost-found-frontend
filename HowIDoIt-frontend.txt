@@ -35,4 +35,12 @@ vite.config.js
       features/items
       shared/components or hooks
 
-
+//ACTUAL CODE
+1. create config/api.js  -> for directly using api anywhere wihout repeating use of axios
+2. create shared/components/Loader.jsx    (shared loader for overall application)
+3. create shared/components/ErrorMessage.jsx 
+4. create shared/components/Layout.jsx
+5. create features/items/api/items.api.js   (for calling backend endpoints)
+6. install react-toastify (for showing toasts)
+7. update App.jsx (include toast at root level)
+8. create items/hooks/useItems.js 
