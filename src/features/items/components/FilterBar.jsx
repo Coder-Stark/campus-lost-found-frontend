@@ -11,10 +11,10 @@ export default function FilterBar({ value, onChange }) {
         <button
           key={opt.label}
           onClick={() => onChange(opt.value)}
-          className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
+          className={`cursor-pointer rounded-full border px-3 py-1 text-sm font-medium transition ${
             value === opt.value
-              ? "border-slate-900 bg-slate-900 text-white"
-              : "border-slate-300 bg-white text-slate-600 hover:bg-slate-100"
+              ? "border-slate-900 bg-slate-900 text-white dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900"
+              : "border-slate-300 bg-white text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
           }`}
         >
           {opt.label}

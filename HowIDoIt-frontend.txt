@@ -53,3 +53,22 @@ vite.config.js
       -> node index.js -> node src/server.js)
 2. Netlify -> for frontend deploy (connected via github and or update base url (render backend url))
 3. Betterstack -> for hit /health api (for always waking up the server)
+
+//NOW BEAUTIFICATION
+1. added modal instead of a direct form (new file -> shared/components/Modal.jsx)
+2. theme added 
+    update index.css for accept dark theme
+    create shared/hooks/useTheme.js
+    create shared/components/ThemeToggle.jsx
+3. seperate navbar added
+4. now for  dark theme correctly apply need to add dark class on each pages
+    update ItemCard.jsx
+    update ItemList.jsx
+    update FilterBar.jsx
+    update ItemForm.jsx
+    update Modal.jsx
+    update Loader.jsx
+
+5. add cursor-pointer for any button or icon
+6. add email and phone number validation (for correctness)
+7. calender validation (no future date allowed)
