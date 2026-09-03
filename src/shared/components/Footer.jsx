@@ -4,10 +4,10 @@ export default function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-sm text-slate-500 dark:text-slate-400 sm:flex-row">
         <span>© {new Date().getFullYear()} Campus Lost &amp; Found</span>
         <a
-          href="https://github.com/your-username"
+          href="https://shivam-kumar-rajbhar.netlify.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-slate-900 dark:hover:text-slate-100"
+          className="cursor-pointer hover:text-slate-900 dark:hover:text-slate-100"
         >
           Built by Shivam Kumar
         </a>

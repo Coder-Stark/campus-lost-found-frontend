@@ -74,3 +74,5 @@ vite.config.js
 7. calender validation (no future date allowed)
 8. time field added and extra submitted field added for distinction of item with its lost/found time
 9. time validation (no future time allowed)
+
+//Auto deployment was implemented thats why my project is now completed
