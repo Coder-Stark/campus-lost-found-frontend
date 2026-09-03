@@ -26,15 +26,24 @@ export default function ItemForm({ onSubmit, isSubmitting, lockedType }) {
     location: "",
     contactMethod: "",
     date: "",
+    time: "",
     description: "",
   };
   const [values, setValues] = useState(initialState);
   const [contactError, setContactError] = useState(null);
+  const [dateError, setDateError] = useState(null);
+
+  const todayStr = new Date().toISOString().split("T")[0];
+  const isToday = values.date === todayStr;
+  const maxTime = isToday
+    ? new Date().toTimeString().slice(0, 5) // "HH:mm" in local time
+    : undefined;
 
   function handleChange(e) {
     const { name, value } = e.target;
     setValues((prev) => ({ ...prev, [name]: value }));
-    if(name === "contactMethod") setContactError(null);
+    if (name === "contactMethod") setContactError(null);
+    if (name === "date" || name === "time") setDateError(null);
   }
 
   function handleContactBlur(){
@@ -50,12 +59,27 @@ export default function ItemForm({ onSubmit, isSubmitting, lockedType }) {
       return;
     }
 
+    // Combine date + time as a timezone-less local string ("YYYY-MM-DDTHH:mm").
+    // new Date() parses this as LOCAL time (unlike a date-only string, which
+    // it parses as UTC) — so .toISOString() converts it to UTC correctly.
+    const localDateTime =
+      values.date && values.time
+        ? `${values.date}T${values.time}`
+        : values.date
+          ? `${values.date}T00:00`
+          : null;
+
+    if (localDateTime && new Date(localDateTime) > new Date()) {
+      setDateError("Time cannot be in the future");
+      return;
+    }
+
     const payload = {
       title: values.title.trim(),
       type: values.type,
       location: values.location.trim(),
       contactMethod: values.contactMethod.trim(),
-      ...(values.date ? { date: new Date(values.date).toISOString() } : {}),
+      ...(localDateTime ? { date: new Date(localDateTime).toISOString() } : {}),
       ...(values.description.trim() ? { description: values.description.trim() } : {}),
     };
 
@@ -138,9 +162,27 @@ export default function ItemForm({ onSubmit, isSubmitting, lockedType }) {
             name="date"
             value={values.date}
             onChange={handleChange}
-            max={new Date().toISOString().split("T")[0]}
+            max={todayStr}
             className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-400"
           />
+        </div>
+
+        <div>
+          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            Time <span className="text-slate-400">(optional)</span>
+          </label>
+          <input
+            type="time"
+            name="time"
+            value={values.time}
+            onChange={handleChange}
+            disabled={!values.date}
+            max={maxTime}
+            className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus:border-slate-500 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-400"
+          />
+          {dateError && (
+            <p className="mt-1 text-xs text-red-600 dark:text-red-400">{dateError}</p>
+          )}
         </div>
 
         <div className="sm:col-span-2">

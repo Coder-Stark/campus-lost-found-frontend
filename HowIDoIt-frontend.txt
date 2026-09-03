@@ -72,3 +72,5 @@ vite.config.js
 5. add cursor-pointer for any button or icon
 6. add email and phone number validation (for correctness)
 7. calender validation (no future date allowed)
+8. time field added and extra submitted field added for distinction of item with its lost/found time
+9. time validation (no future time allowed)

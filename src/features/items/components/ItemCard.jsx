@@ -1,10 +1,15 @@
-function formatDate(value) {
+function formatDateTime(value) {
   if (!value) return null;
+
   try {
-    return new Date(value).toLocaleDateString(undefined, {
+    return new Date(value).toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
       year: "numeric",
       month: "short",
       day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
     });
   } catch {
     return value;
@@ -13,7 +18,8 @@ function formatDate(value) {
 
 export default function ItemCard({ item }) {
   const isLost = item.type === "Lost";
-  const date = formatDate(item.date || item.createdAt);
+  const reportedDateTime = formatDateTime(item.date);
+  const submittedDateTime = formatDateTime(item.createdAt);
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
@@ -35,10 +41,20 @@ export default function ItemCard({ item }) {
           <dt className="font-medium text-slate-500 dark:text-slate-400">Location:</dt>
           <dd>{item.location}</dd>
         </div>
-        {date && (
+        {reportedDateTime && (
           <div className="flex gap-1.5">
-            <dt className="font-medium text-slate-500 dark:text-slate-400">Date:</dt>
-            <dd>{date}</dd>
+            <dt className="font-medium text-slate-500 dark:text-slate-400">
+              Date:
+            </dt>
+            <dd>{reportedDateTime}</dd>
+          </div>
+        )}
+        {submittedDateTime && (
+          <div className="flex gap-1.5">
+            <dt className="font-medium text-slate-500 dark:text-slate-400">
+              Submitted:
+            </dt>
+            <dd>{submittedDateTime}</dd>
           </div>
         )}
         {item.description && (
