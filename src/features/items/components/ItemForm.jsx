@@ -1,16 +1,15 @@
 import { useState } from "react";
 
-const INITIAL_STATE = {
-  title: "",
-  type: "Lost",
-  location: "",
-  contactMethod: "",
-  date: "",
-  description: "",
-};
-
-export default function ItemForm({ onSubmit, isSubmitting }) {
-  const [values, setValues] = useState(INITIAL_STATE);
+export default function ItemForm({ onSubmit, isSubmitting, lockedType }) {
+  const initialState = {
+    title: "",
+    type: lockedType || "Lost",
+    location: "",
+    contactMethod: "",
+    date: "",
+    description: "",
+  };
+  const [values, setValues] = useState(initialState);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -31,7 +30,7 @@ export default function ItemForm({ onSubmit, isSubmitting }) {
 
     try {
       await onSubmit(payload);
-      setValues(INITIAL_STATE);
+      setValues(initialState);
     } catch {
       // toast already shown by useItems
     }
@@ -55,19 +54,21 @@ export default function ItemForm({ onSubmit, isSubmitting }) {
           />
         </div>
 
-        <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700">Type</label>
-          <select
-            name="type"
-            required
-            value={values.type}
-            onChange={handleChange}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
-          >
-            <option value="Lost">Lost</option>
-            <option value="Found">Found</option>
-          </select>
-        </div>
+        {!lockedType && (
+          <div>
+            <label className="mb-1 block text-sm font-medium text-slate-700">Type</label>
+            <select
+              name="type"
+              required
+              value={values.type}
+              onChange={handleChange}
+              className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none"
+            >
+              <option value="Lost">Lost</option>
+              <option value="Found">Found</option>
+            </select>
+          </div>
+        )}
 
         <div>
           <label className="mb-1 block text-sm font-medium text-slate-700">Location</label>

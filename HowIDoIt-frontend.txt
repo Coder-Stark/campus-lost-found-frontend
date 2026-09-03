@@ -44,3 +44,12 @@ vite.config.js
 6. install react-toastify (for showing toasts)
 7. update App.jsx (include toast at root level)
 8. create items/hooks/useItems.js 
+
+//Deploy
+1. Render -> for backend deploy (
+    1. connect github repo
+    2. add env variables 
+    3. path of start change 
+      -> node index.js -> node src/server.js)
+2. Netlify -> for frontend deploy (connected via github and or update base url (render backend url))
+3. Betterstack -> for hit /health api (for always waking up the server)

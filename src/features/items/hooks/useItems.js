@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { createItem, fetchItems } from "../api/items.api";
 
@@ -9,11 +9,11 @@ export function useItems() {
   const [loadError, setLoadError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const loadItems = useCallback(async (type) => {
+  const loadItems = useCallback(async () => {
     setIsLoading(true);
     setLoadError(null);
     try {
-      const data = await fetchItems(type || undefined);
+      const data = await fetchItems();
       setItems(data);
     } catch (err) {
       setLoadError(
@@ -26,15 +26,21 @@ export function useItems() {
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    loadItems(typeFilter);
-  }, [typeFilter, loadItems]);
+    loadItems();
+  }, [loadItems]);
+
+  const filteredItems = useMemo(
+    () => ( 
+      typeFilter ? items.filter((item) => item.type === typeFilter) : items
+    ), [items, typeFilter]
+  );
 
   const addItem = useCallback(
     async (payload) => {
       setIsSubmitting(true);
       try {
         const created = await createItem(payload);
-        await loadItems(typeFilter);
+        await loadItems();
         toast.success("Report submitted.");
         return created;
       } catch (err) {
@@ -49,16 +55,16 @@ export function useItems() {
         setIsSubmitting(false);
       }
     },
-    [loadItems, typeFilter]
+    [loadItems]
   );
 
   return {
-    items,
+    items: filteredItems,
     isLoading,
     loadError,
     typeFilter,
     setTypeFilter,
-    refetch: () => loadItems(typeFilter),
+    refetch: loadItems,
     addItem,
     isSubmitting,
   };
